@@ -100,3 +100,30 @@ sys_uptime(void)
   release(&tickslock);
   return xticks;
 }
+/*
+uint64
+sys_pgaccess(void)
+{
+  uint64 start;
+  int npages;
+  uint64 bitmask_user_address;
+  uint64 bitmask_kernel=0;
+  if(argaddr(0,&start)<0)
+    return -1 ;
+  if(argint(0,&npages)<0)
+    return -1;
+  if(argaddr(2,&bitmask_user_address)<0)
+    return -1;
+
+  for(int i=0;i<npages;i++){
+    pte_t *pte =walk(myproc()->pagetable,start,0);
+    if(*pte & PTE_A){
+      bitmask_kernel |=1 << i;
+      *pte&= ~PTE_A;
+    }
+    start+=PGSIZE;
+  }
+  if(copypout(myproc()->pagetable,bitmaask_user_address,(char*) &bitmask_kernel,k_kernel,sizeof(bitmask_kernel)))
+    return -1;
+  return 0;
+}*/
