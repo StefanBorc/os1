@@ -10,14 +10,19 @@
 #define STACK_SIZE  8192
 #define MAX_THREAD  4
 
+struct thread_context{
+  uint64 sp;
+  uint64 pa;
+};
 
 struct thread {
   char       stack[STACK_SIZE]; /* the thread's stack */
   int        state;             /* FREE, RUNNING, RUNNABLE */
+  struct thread_context context;
 };
 struct thread all_thread[MAX_THREAD];
 struct thread *current_thread;
-extern void thread_switch(uint64, uint64);
+extern void thread_switch(struct thread_context*, struct thread_context*);
               
 void 
 thread_init(void)
@@ -60,7 +65,8 @@ thread_schedule(void)
      * Invoke thread_switch to switch from t to next_thread:
      * thread_switch(??, ??);
      */
-  } else
+      thread_switch(&t->context ,&next_thread->context );
+     } else
     next_thread = 0;
 }
 
@@ -74,7 +80,9 @@ thread_create(void (*func)())
   }
   t->state = RUNNABLE;
   // YOUR CODE HERE
-}
+  t->context.sp=(uint64)func;
+  t->context.pa=(uint64)(t->stack+STACK_SIZE);
+ }
 
 void 
 thread_yield(void)
