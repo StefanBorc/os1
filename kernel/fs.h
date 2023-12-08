@@ -23,10 +23,17 @@ struct superblock {
 };
 
 #define FSMAGIC 0x10203040
-
-#define NDIRECT 12
+//zmena NDIRECT z 12 na 11 
+#define NDIRECT 11
+//pridane
+#define DNDIRECT 12
+//
 #define NINDIRECT (BSIZE / sizeof(uint))
-#define MAXFILE (NDIRECT + NINDIRECT)
+//pridane
+#define DNINDIRECT (BSIZE / sizeof(uint))*(BSIZE / sizeof(uint))
+//
+//zmena pridane + DOUBLENINDIRECT
+#define MAXFILE (NDIRECT + NINDIRECT + DNINDIRECT)
 
 // On-disk inode structure
 struct dinode {
@@ -35,7 +42,8 @@ struct dinode {
   short minor;          // Minor device number (T_DEVICE only)
   short nlink;          // Number of links to inode in file system
   uint size;            // Size of file (bytes)
-  uint addrs[NDIRECT+1];   // Data block addresses
+  //zmena z +1 na +2
+  uint addrs[NDIRECT+2];   // Data block addresses
 };
 
 // Inodes per block.
