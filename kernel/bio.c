@@ -69,6 +69,7 @@ binit(void)
     //vytvor ll z bufferov
     bcache.head[i].prev=&bcache.head[i];
     bcache.head[i].next=&bcache.head[i];
+
     for(b=bcache.buf[i];b<bcache.buf[i]+BNBUF;b++){
       b->next=bcache.head[i].next;
       b->prev=&bcache.head[i];
