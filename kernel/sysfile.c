@@ -350,7 +350,7 @@ sys_open(void)
       end_op();
       return -1;
     }
-
+//
     if(ip->type == T_DIR && omode != O_RDONLY){
       iunlockput(ip);
       end_op();
@@ -527,6 +527,7 @@ sys_pipe(void)
   }
   return 0;
 }
+//nova funkcia doplnena
 uint64
 sys_symlink(void){
   char new[MAXPATH];
