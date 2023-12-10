@@ -422,19 +422,22 @@ bmap(struct inode *ip, uint bn)
 
   if(bn<DNINDIRECT){
     if((addr=ip->addrs[DNDIRECT])==0){
-      ip->addrs[DNDIRECT]=addr=balloc(ip->dev);
+      addr=balloc(ip->dev);
+      ip->addrs[DNDIRECT]=addr;
     }
     bp=bread(ip->dev,addr);
     a=(uint*)bp->data;
     if((addr=a[bn/NINDIRECT])==0){
-      a[bn/NINDIRECT]=addr=balloc(ip->dev);
+      addr=balloc(ip->dev);
+      a[bn/NINDIRECT]=addr;
       log_write(bp);
     }
     brelse(bp);
     bp=bread(ip->dev,addr);
     a=(uint*)bp->data;
     if((addr=a[bn%NINDIRECT])==0){
-      a[bn%NINDIRECT]=addr=balloc(ip->dev);
+      addr=balloc(ip->dev);
+      a[bn%NINDIRECT]=addr;
       log_write(bp);
     }
     brelse(bp);
